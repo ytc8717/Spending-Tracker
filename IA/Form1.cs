@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Text;
 using GenericMethodForTableFilter;
+using System.Xml.Linq;
 
 namespace IA
 {
@@ -31,7 +32,7 @@ namespace IA
         {
             InitializeComponent();
         }
-        
+
         private void Form1_Load(object sender, EventArgs e)
         {
             // add columns in each dataTable
@@ -77,6 +78,16 @@ namespace IA
                 xtr1 = new XmlTextReader(fileName1);
                 xtr1.WhitespaceHandling = WhitespaceHandling.None;
 
+                if (!File.Exists(Application.StartupPath + fileName1))
+                {
+                    new XDocument(
+                        new XElement("Expense",
+                            new XElement("Expense", "")
+                        )
+                    )
+                    .Save("ComboE.xml");
+                }
+
                 // Scan the XML file
                 while (xtr1.Read())
                 {
@@ -110,6 +121,16 @@ namespace IA
                 // Initialize the XmlTextReader variable with the name of the file
                 xtr = new XmlTextReader(fileName);
                 xtr.WhitespaceHandling = WhitespaceHandling.None;
+
+                if (!File.Exists(Application.StartupPath + fileName))
+                {
+                    new XDocument(
+                        new XElement("Income",
+                            new XElement("Income", "")
+                        )
+                    )
+                    .Save("ComboIC.xml");
+                }
 
                 // Scan the XML file
                 while (xtr.Read())
@@ -190,7 +211,7 @@ namespace IA
                     dtI.Rows.Add(0);
                 }
             }
-            
+
             // write xml files
             ds.WriteXml(Application.StartupPath + "\\data.xml");
             dsE.WriteXml(Application.StartupPath + "\\Expense.xml");
@@ -228,7 +249,7 @@ namespace IA
                 labelIncome.Enabled = false;
                 numericUpDownIncome.Enabled = false;
                 dateTimePicker1.Enabled = false;
-                
+
 
                 numericUpDownIncome.Value = 0;
             }
@@ -251,7 +272,7 @@ namespace IA
                 comboBoxExpense.Enabled = false;
                 numericUpDownExpense.Enabled = false;
                 dateTimePicker1.Enabled = false;
-                
+
 
                 numericUpDownExpense.Value = 0;
             }
